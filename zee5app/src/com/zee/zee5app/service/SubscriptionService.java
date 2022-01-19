@@ -1,39 +1,16 @@
 package com.zee.zee5app.service;
 
+import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.dto.Subscription;
-import com.zee.zee5app.repository.SubscriptionRepository;
 
-
-public class SubscriptionService {
-
-	private SubscriptionRepository repository = SubscriptionRepository.getInstance();
-	private SubscriptionService() {
-		
-	}
-static SubscriptionService service = null;
-
-public static SubscriptionService getInstance() {
-	if(service==null) {
-		service = new SubscriptionService();
-	}
-	return service;
-}
-public String addSubscription(Subscription subscription) {
-	return this.repository.addSubscription(subscription);
-}
-public Subscription getSubscriptionById(String id) {
-	return repository.getSubscriptionById(id);
-}
-public Subscription[] getSubscriptions() {
-	return repository.getSubscriptions();
+public interface SubscriptionService {
 	
-}
-public String updateSubscription(String id , Subscription subscription) {
-	return repository.updateSubscription(id, subscription);
-}
-public String deleteSubscription(String id) {
-	return repository.deleteSubscription(id);
-}
-}
+	public String addSubscription(Subscription subscription);
+	public String updateSubscription(String id, Subscription subscription);
+	public Subscription getSubscriptionById(String id);
+	public Subscription[] getAllSubscriptions();
+	public String deleteSubscriptionById(String id);
 
 
+
+}

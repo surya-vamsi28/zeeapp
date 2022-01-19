@@ -7,18 +7,22 @@ import com.zee.zee5app.dto.Movie;
 import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.service.SubscriptionService;
+import com.zee.zee5app.service.impl.MovieServiceImpl;
+import com.zee.zee5app.service.impl.SubscriptionServiceImpl;
+import com.zee.zee5app.service.impl.UserServiceImpl;
 import com.zee.zee5app.service.MovieService;
 import com.zee.zee5app.service.SeriesService;
+import com.zee.zee5app.service.impl.SeriesServiceImpl;
 
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		UserService service = UserService.getInstance();
-		SubscriptionService subservice = SubscriptionService.getInstance();
-		MovieService movservice = MovieService.getInstance();
-		SeriesService serservice = SeriesService.getInstance();
+		UserService service = UserServiceImpl.getInstance();
+		SubscriptionService subservice = SubscriptionServiceImpl.getInstance();
+		MovieService movservice = MovieServiceImpl.getInstance();
+		SeriesService serservice = SeriesServiceImpl.getInstance();
 		
 		
 		
@@ -54,11 +58,11 @@ public class Main {
 		String a = service.updateUser("ab008" , register2);
 		System.out.println(a);
 		
-		String b = service.deleteUser("ab002");
+		String b = service.deleteUserById("ab002");
 		System.out.println(b);
 		
 		
-		for (Register register3 : service.getUsers()) {
+		for (Register register3 : service.getAllUsers()) {
 			System.out.println(register3);
 		}
 		
@@ -72,10 +76,12 @@ public class Main {
 		movie.setMovie_Release_Date("december");
 		movie.setMovie_trailer("youtube.com");
 		
+		
 		String out = movservice.addMovie(movie);
 		
-		String out1 = movservice.deleteMovie("1");
-		System.out.println(out + out1);
+		String out1 = movservice.deleteMovieById("1");
+		System.out.println(out);
+		System.out.println(out1);
 		
 		
 		}

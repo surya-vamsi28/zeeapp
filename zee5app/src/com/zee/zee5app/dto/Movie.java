@@ -1,8 +1,10 @@
 package com.zee.zee5app.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+
 
 public class Movie {
 	private String movie_id;
