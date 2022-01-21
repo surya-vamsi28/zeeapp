@@ -1,11 +1,13 @@
 package com.zee.zee5app.repository.impl;
+import java.util.ArrayList;
+import java.util.Optional;
 
 import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.repository.UserRepository;
 
 public class UserRepositoryImpl implements UserRepository {
 	
-	private UserRepositoryImpl() {
+private UserRepositoryImpl() {
 		
 	}
 	private static UserRepository repository;
@@ -15,74 +17,56 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 		return repository;
 	}
-	private Register[] registers = new Register[10];
-	private static int count = -1;
+	
+	private ArrayList<Register> arraylist = new ArrayList<>();
+
 	@Override
-	
-	
 	public String addUser(Register register) {
 		// TODO Auto-generated method stub
-		if(count == registers.length-1) {
-			Register temp[] = new Register[registers.length*2];
+		boolean result = this.arraylist.add(register);
+		if(result) {
 			
-			System.arraycopy(registers, 0, temp, 0, registers.length);
-			registers = temp;
-			registers[++count] = register;
-			return "array is full";
-		}
-		registers[++count] = register;
-		return "success";
-		}
 		
-	
+		return "success";}
+		
+	else {
+		return "fail";
+	}
+		}
 
 	@Override
-	public String updateUser(String id, Register register1) {
+	public String updateUser(String id, Register register) {
 		// TODO Auto-generated method stub
-		int count1 = 0;
-		for (Register register : registers) {
-			if(register != null && register.getId().equals(id)) {
-				registers[count1] = register1;
-				return("Completed");
+		return null;
+	}
+
+	@Override
+	public Optional<Register> getUserById(String id) {
+		// TODO Auto-generated method stub
+		Register register2 = null;
+		for (Register register : arraylist) {
+			if(register!=null && register.getId().equals(id)) {
+				register2 = register ;
 			}
-			count1++;
 			
 		}
-		return("Not Completed");
+		return Optional.ofNullable(register2);
+//		if register is holding null it will act like empty
+//		if register is holding object if will act like of
 	}
 
 	@Override
-	public Register getUserById(String id) {
-		for (Register register : registers) {
-			if(register!= null && register.getId().equals(id)  ) {
-				return( register);
-			}
-		}
-		return(null);
-	}
-
-	@Override
-	public Register[] getAllUsers() {
+	public ArrayList getAllUsers() {
 		// TODO Auto-generated method stub
-		return registers;	
+		return arraylist;
+		
+		
 	}
 
 	@Override
 	public String deleteUserById(String id) {
-		int count1 = 0;
-		for (Register register : registers) {
-			
-			if(register!= null && register.getId().equals(id)  ) {
-				System.arraycopy(registers, count1+1, registers, count1, registers.length-count1-1);
-				registers[registers.length-1] = null;
-				return("Completed");
-			}
-			count1++;
-		}
-		
-		return("Not Completed");
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 }
-
-
