@@ -1,6 +1,10 @@
 package com.zee.zee5app.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.zee.zee5app.dto.Series;
+import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.repository.SeriesRepository;
 import com.zee.zee5app.repository.impl.SeriesRepositoryImpl;
 import com.zee.zee5app.service.SeriesService;
@@ -23,13 +27,13 @@ public class SeriesServiceImpl implements SeriesService {
 	}
 
 	@Override
-	public String updateSeries(String id, Series series) {
+	public String updateSeries(String id, Series series) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		return seriesRepository.updateSeries(id, series);
 	}
 
 	@Override
-	public Series getSeriesById(String id) {
+	public Optional<Series> getSeriesById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		return seriesRepository.getSeriesById(id);
 	}
@@ -40,9 +44,15 @@ public class SeriesServiceImpl implements SeriesService {
 	}
 
 	@Override
-	public String deleteSeriesById(String id) {
+	public String deleteSeriesById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		return seriesRepository.deleteSeriesById(id);
+	}
+
+	@Override
+	public List<Series> getAllSeriesDetails() {
+		// TODO Auto-generated method stub
+		return seriesRepository.getAllSeriesDetails();
 	}
 
 

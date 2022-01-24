@@ -1,12 +1,14 @@
 package com.zee.zee5app;
 
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 
 public class Main2 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvalidEmailException, InvalidPasswordException {
 		// TODO Auto-generated method stub
 		
 		

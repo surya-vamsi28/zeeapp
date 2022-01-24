@@ -7,8 +7,10 @@ import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.service.*;
 import com.zee.zee5app.dto.Movie;
 import com.zee.zee5app.dto.Subscription;
+import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.service.SubscriptionService;
 import com.zee.zee5app.service.impl.MovieServiceImpl;
@@ -21,7 +23,7 @@ import com.zee.zee5app.service.impl.SeriesServiceImpl;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		UserService service = UserServiceImpl.getInstance();
 		SubscriptionService subservice = SubscriptionServiceImpl.getInstance();
@@ -33,27 +35,25 @@ public class Main {
 		
 		Register register = new Register(); 
 		try {
-			register.setFirstName("abhinandhan");
-			register.setLastName("chivate");
+			register.setFirstName("abhinandhan1");
+			register.setLastName("chivate1");
 		} catch (InvalidNameException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
+		
+		
+			try {
+				register.setPassword("abhi0000001");
+			} catch (InvalidPasswordException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		
 		try {
-			register.setEmail("abhi@gmail.com");
-		} catch (InvalidNameException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			register.setPassword("abhi1234");
-		} catch (InvalidNameException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			register.setId("ab0000001");
+			register.setId("ab00000001");
 			service.addUser(register);
 		} catch (InvalidIdLengthException e) {
 			// TODO Auto-generated catch block
@@ -67,13 +67,13 @@ public class Main {
 		
 		
 		for(int i=1;i<=25;i++) {
-			Register register2 = new Register();
+			Register register2 = new Register();	
 			
 			try {
-				register2.setId("ab0000000"+i);
+				register2.setId("ab0000000" + i);
 				register2.setFirstName("abhinandhan" + i);
 				register2.setLastName("chivate" + i);
-				register2.setPassword("abhi"+i);
+				register2.setPassword("abhi" + i);
 			} catch (InvalidNameException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,13 +97,13 @@ public class Main {
 		
 		
 		
-		Register register2 = null;
-		String a = service.updateUser("ab008" , register2 );
+		
+		String a = service.updateUser("ab00000008" , register );
 		System.out.println(a);
-		
-		String b = service.deleteUserById("ab002");
+//		
+		String b = service.deleteUserById("ab00000002");
 		System.out.println(b);
-		
+//		
 		
 		
 		
@@ -126,14 +126,24 @@ public class Main {
 		
 		
 		
-	Optional<Register> optional = service.getUserById("ab0000001 ");
+	Optional<Register> optional ;
+	try {
+		optional = service.getUserById("ab00000001");
+		if(optional.isPresent()) {
+			System.out.println("getUserById" + optional.get());
+		}
+		else {
+			System.out.println("id not found");
+		}
+	} catch (IdNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	
-	if(optional.isPresent()) {
-		System.out.println("getUserById" + optional.get());
-	}
-	else {
-		System.out.println("id not found");
-	}
+	service.getAllUserDetails().forEach(e->System.out.println(e));
+	
+	
 	}
 
 }
+

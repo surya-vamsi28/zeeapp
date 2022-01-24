@@ -1,9 +1,23 @@
 package com.zee.zee5app.repository.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.zee.zee5app.dto.Movie;
+import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.repository.MovieRepository;
 
 public class MovieRepositoryImpl implements MovieRepository {
+private MovieRepositoryImpl() {
+		
+	}
 	private static MovieRepository repository;
 	public static MovieRepository getInstance() {
 		if(repository==null) {
@@ -11,71 +25,93 @@ public class MovieRepositoryImpl implements MovieRepository {
 		}
 		return repository;
 	}
-	private Movie[] movies = new Movie[10];
-	private static int count = -1;
+	
+	private Set<Movie> set = new LinkedHashSet<>();
 
 	@Override
 	public String addMovie(Movie movie) {
 		// TODO Auto-generated method stub
-		if(count == movies.length-1) {
-			Movie temp[] = new Movie[movies.length*2];
+		boolean result = this.set.add(movie);
+		System.out.println(this.set.size());
+		if(result) {
 			
-			System.arraycopy(movies, 0, temp, 0, movies.length);
-			movies = temp;
-			movies[++count] = movie;
-			return "array is full";
-		}
-		movies[++count] = movie;
-		return "success";
+		
+		return "success";}
+		
+	else {
+		return "fail";
 	}
+		}
+
+	
 
 	@Override
-	public String updateMovie(String id, Movie movie1) {
+	public Optional<Movie> getMovieById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		int count1 = 0;
-		for (Movie movie : movies) {
-			if(movie != null && movie.getMovie_id().equals(id)) {
-				movies[count1] = movie1;
-				return("Completed");
-			}
-			count1++;
-			
-		}
-		return("Not Completed");
-	}
-
-	@Override
-	public Movie getMovieById(String id) {
-		// TODO Auto-generated method stub
-		for (Movie movie : movies) {
-			if(movie!= null && movie.getMovie_id().equals(id)  ) {
-				return( movie);
+		Movie movie2 = null;
+		for (Movie movie : set) {
+			if(movie!=null && movie.getMovie_id().equals(id)) {
+				movie2 = movie ;
+				break;
 			}
 		}
-		return(null);
+		return Optional.ofNullable(Optional.of(movie2).orElseThrow(()-> new IdNotFoundException("id not found")));
+//		return Optional.of(Optional.ofNullable(movie2).orElseThrow(()-> new IdNotFoundException("id not found")));
+//		if movie is holding null it will act like empty
+//		if movie is holding object if will act like of
 	}
 
 	@Override
 	public Movie[] getAllMovies() {
 		// TODO Auto-generated method stub
-		return movies;
+		Movie[] movie = new Movie[set.size()];
+		
+		return set.toArray(movie);
+	}
+	
+	
+	
+	@Override
+	public List<Movie> getAllMovieDetails(){
+//		Collections.sort(set);
+//		return set;
+		
+		return new ArrayList<>(set);
 	}
 
 	@Override
-	public String deleteMovieById(String id) {
+	public String deleteMovieById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		int count1 = 0;
-		for (Movie movie : movies) {
+		Optional<Movie> optional = this.getMovieById(id);
+		if(optional.isPresent()) {
+			boolean result = set.remove(optional.get());
 			
-			if(movie!= null && movie.getMovie_id().equals(id)  ) {
-				System.arraycopy(movies, count1+1, movies, count1, movies.length-count1-1);
-				movies[movies.length-1] = null;
-				return("Completed");
+			if(result) {
+				return "Success";
 			}
-			count1++;
+			else
+				return "fail";
 		}
+		return "fail";
 		
-		return("Not Completed");
+		
+	}
+	@Override
+	public String updateMovie(String id, Movie movie) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Movie> optional = this.getMovieById(id);
+		if(optional.isPresent()) {
+			boolean result = set.remove(optional.get());
+			set.add(movie);
+			if(result) {
+				return "Success";
+			}
+			else
+				return "fail";
+			
+		}
+		return "fail";
 	}
 
 }
+

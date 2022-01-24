@@ -11,8 +11,10 @@ import lombok.ToString;
 
 import java.util.Objects;
 
+import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 
 
 @Setter
@@ -24,9 +26,10 @@ import com.zee.zee5app.exception.InvalidNameException;
 
 
 
-public class Register {
+public class Register implements Comparable<Register>
+{
 	
-	public Register(String id,String firstName,String lastName, String email, String password) throws InvalidNameException, InvalidIdLengthException {
+	public Register(String id,String firstName,String lastName, String email, String password) throws InvalidNameException, InvalidIdLengthException, InvalidEmailException, InvalidPasswordException {
 		super();
 		this.setId(id);
 		this.setFirstName(firstName);
@@ -80,15 +83,15 @@ public class Register {
 		this.lastName = lastName;
 	}
 
-	public void setEmail(String email) throws InvalidNameException {
+	public void setEmail(String email) throws InvalidEmailException {
 		if(email == null || email == "" || email.length()<2)
-			throw new InvalidNameException("email is not valid");
+			throw new InvalidEmailException("email is not valid");
 		this.email = email;
 	}
 
-	public void setPassword(String password) throws InvalidNameException {
-		if(password == null ||password == "" || password.length()<2)
-			throw new InvalidNameException("password is not valid");
+	public void setPassword(String password) throws InvalidPasswordException {
+		if(password == null ||password == "" || password.length()<4)
+			throw new InvalidPasswordException("password is not valid");
 		this.password = password;
 	}
 
@@ -109,6 +112,13 @@ public class Register {
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, firstName, id, lastName, password);
+	}
+
+	@Override
+	public int compareTo(Register o) {
+		// TODO Auto-generated method stub
+		
+		return o.id.compareTo(this.id);
 	}
 	
 	
